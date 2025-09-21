@@ -175,24 +175,24 @@ jobs:
         mkdir -p reports
         mv vulnerabilities_report_product.json reports/
 
-    - name: Upload Product Vulnerabilities Report
-      uses: actions/upload-artifact@v3
+    - name: Upload Product Docker Scout JSON Report
+      uses: actions/upload-artifact@v4
       with:
-        name: vulnerabilities-report
-        path: reports/vulnerabilities_report_product.json
-
+        name: vulnerabilities_report_product.json
+        path: vulnerabilities_report_product.json
+        
     - name: Run Docker Scout Scan for Product Service
       run: |
         docker scout cves ${{ env.ACR_LOGIN_SERVER }}/order_service:latest > vulnerabilities_report_order.json
         mkdir -p reports
         mv vulnerabilities_report_order.json reports/
 
-    - name: Upload Order Vulnerabilities Report
-      uses: actions/upload-artifact@v3
+    - name: Upload Order Docker Scout JSON Report
+      uses: actions/upload-artifact@v4
       with:
-        name: vulnerabilities-report
-        path: reports/vulnerabilities_report_order.json
-
+        name: vulnerabilities_report_order.json
+        path: vulnerabilities_report_order.json
+        
     - name: Logout from Azure
       run: az logout
       if: always()
