@@ -169,24 +169,30 @@ jobs:
     - name: Login to Azure Container Registry
       run: az acr login --name ${{ env.ACR_LOGIN_SERVER }}
 
-    - name: Run Docker Scout on Product Service Image
+    - name: Run Docker Scout Scan for Product Service
       run: |
-        docker scout cves ${{ env.ACR_LOGIN_SERVER }}/product_service:latest --format sarif > product_service_scout_report.sarif
+        docker scout cves ${{ env.ACR_LOGIN_SERVER }}/product_service:latest > vulnerabilities_report_product.json
+        mkdir -p reports
+        mv vulnerabilities_report_product.json reports/
 
-    - name: Upload Product Service SARIF report
-      uses: github/codeql-action/upload-sarif@v2
+    - name: Upload Product Vulnerabilities Report
+      uses: actions/upload-artifact@v3
       with:
-        sarif_file: product_service_scout_report.sarif
+        name: vulnerabilities-report
+        path: reports/vulnerabilities_report_product.json
 
-    - name: Run Docker Scout on Order Service Image
+    - name: Run Docker Scout Scan for Product Service
       run: |
-        docker scout cves ${{ env.ACR_LOGIN_SERVER }}/order_service:latest --format sarif > order_service_scout_report.sarif
+        docker scout cves ${{ env.ACR_LOGIN_SERVER }}/order_service:latest > vulnerabilities_report_order.json
+        mkdir -p reports
+        mv vulnerabilities_report_order.json reports/
 
-    - name: Upload Product Service SARIF report
-      uses: github/codeql-action/upload-sarif@v2
+    - name: Upload Order Vulnerabilities Report
+      uses: actions/upload-artifact@v3
       with:
-        sarif_file: order_service_scout_report.sarif
-    
+        name: vulnerabilities-report
+        path: reports/vulnerabilities_report_order.json
+
     - name: Logout from Azure
       run: az logout
       if: always()
