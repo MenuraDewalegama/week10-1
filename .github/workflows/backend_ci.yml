@@ -190,7 +190,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: vulnerabilities_report_product.json
-        path: vulnerabilities_report_product.json
+        path: reports/vulnerabilities_report_product.json
         
     - name: Run Docker Scout Scan for Product Service
       run: |
@@ -202,7 +202,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: vulnerabilities_report_order.json
-        path: vulnerabilities_report_order.json
+        path: reports/vulnerabilities_report_order.json
         
     - name: Logout from Azure
       run: az logout
