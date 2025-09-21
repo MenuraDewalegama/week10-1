@@ -171,11 +171,14 @@ jobs:
 
     - name: Install Docker Scout CLI plugin
       run: |
-        DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
-        mkdir -p "$DOCKER_CONFIG/cli-plugins"
-        curl -sSL https://github.com/docker/scout-cli/releases/latest/download/docker-scout_linux_amd64 -o "$DOCKER_CONFIG/cli-plugins/docker-scout"
-        chmod +x "$DOCKER_CONFIG/cli-plugins/docker-scout"
+        mkdir -p ~/.docker/cli-plugins
+        curl -sSL https://github.com/docker/scout-cli/releases/latest/download/docker-scout_linux_amd64 \
+          -o ~/.docker/cli-plugins/docker-scout
+        chmod +x ~/.docker/cli-plugins/docker-scout
 
+    - name: Verify Docker Scout is installed
+      run: docker scout version
+      
     - name: Run Docker Scout Scan for Product Service
       run: |
         docker scout cves ${{ env.ACR_LOGIN_SERVER }}/product_service:latest > vulnerabilities_report_product.json
