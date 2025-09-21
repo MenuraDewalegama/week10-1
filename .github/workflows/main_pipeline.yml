@@ -6,6 +6,7 @@ on:
   push:
     branches:
       - dev
+      - main
     paths:
       - 'backend/**'
       - 'frontend/**'
@@ -30,23 +31,23 @@ jobs:
     uses: ./.github/workflows/frontend_ci.yml
     secrets: inherit
 
-  deploy_backend:
-    name: Deploy Backend
-    needs: [run_backend_ci, run_frontend_ci]
-    uses: ./.github/workflows/backend-cd.yml
-    with:
-      aks_cluster_name: '224917579'
-      aks_resource_group: 'deakinuni'
-      aks_acr_name: '224917579'
-    secrets: inherit
+  # deploy_backend:
+  #   name: Deploy Backend
+  #   needs: [run_backend_ci, run_frontend_ci]
+  #   uses: ./.github/workflows/backend-cd.yml
+  #   with:
+  #     aks_cluster_name: '224917579'
+  #     aks_resource_group: 'deakinuni'
+  #     aks_acr_name: '224917579'
+  #   secrets: inherit
 
-  deploy_frontend:
-    name: Deploy Frontend
-    needs: deploy_backend
-    uses: ./.github/workflows/frontend-cd.yml
-    with:
-      aks_cluster_name: '224917579'
-      aks_resource_group: 'deakinuni'
-      product_api_ip: ${{ needs.deploy_backend.outputs.product_api_ip }}
-      order_api_ip: ${{ needs.deploy_backend.outputs.order_api_ip }}
-    secrets: inherit
+  # deploy_frontend:
+  #   name: Deploy Frontend
+  #   needs: deploy_backend
+  #   uses: ./.github/workflows/frontend-cd.yml
+  #   with:
+  #     aks_cluster_name: '224917579'
+  #     aks_resource_group: 'deakinuni'
+  #     product_api_ip: ${{ needs.deploy_backend.outputs.product_api_ip }}
+  #     order_api_ip: ${{ needs.deploy_backend.outputs.order_api_ip }}
+  #   secrets: inherit
