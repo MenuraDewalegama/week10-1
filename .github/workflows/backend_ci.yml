@@ -176,12 +176,9 @@ jobs:
           -o ~/.docker/cli-plugins/docker-scout
         chmod +x ~/.docker/cli-plugins/docker-scout
 
-    - name: Verify Docker Scout is installed
-      run: docker scout version
-      
     - name: Run Docker Scout Scan for Product Service
       run: |
-        docker scout cves ${{ env.ACR_LOGIN_SERVER }}/product_service:latest > vulnerabilities_report_product.json
+        ~/.docker/cli-plugins/docker-scout cves ${{ env.ACR_LOGIN_SERVER }}/product_service:latest > vulnerabilities_report_product.json
         mkdir -p reports
         mv vulnerabilities_report_product.json reports/
 
@@ -193,7 +190,7 @@ jobs:
         
     - name: Run Docker Scout Scan for Product Service
       run: |
-        docker scout cves ${{ env.ACR_LOGIN_SERVER }}/order_service:latest > vulnerabilities_report_order.json
+        ~/.docker/cli-plugins/docker-scout cves ${{ env.ACR_LOGIN_SERVER }}/order_service:latest > vulnerabilities_report_order.json
         mkdir -p reports
         mv vulnerabilities_report_order.json reports/
 
