@@ -192,7 +192,7 @@ jobs:
         name: vulnerabilities_report_product.json
         path: reports/vulnerabilities_report_product.json
         
-    - name: Run Docker Scout Scan for Product Service
+    - name: Run Docker Scout Recommendations for Product Service
       run: |
         docker scout recommendations ${{ env.ACR_LOGIN_SERVER }}/product_service:latest > recommendations_report_product.json
         mv recommendations_report_product.json reports/
@@ -203,7 +203,7 @@ jobs:
         name: recommendations_report_product.json
         path: reports/recommendations_report_product.json
         
-    - name: Run Docker Scout Scan for Product Service
+    - name: Run Docker Scout Scan for Order Service
       run: |
         docker scout cves ${{ env.ACR_LOGIN_SERVER }}/order_service:latest > vulnerabilities_report_order.json
         mkdir -p reports
@@ -215,12 +215,12 @@ jobs:
         name: vulnerabilities_report_order.json
         path: reports/vulnerabilities_report_order.json
 
-    - name: Run Docker Scout Scan for Product Service
+    - name: Run Docker Scout Recommendations for Order Service
       run: |
-        docker scout recommendations ${{ env.ACR_LOGIN_SERVER }}/product_service:latest > recommendations_report_order.json
+        docker scout recommendations ${{ env.ACR_LOGIN_SERVER }}/order_service:latest > recommendations_report_order.json
         mv recommendations_report_order.json reports/
 
-    - name: Upload Product Docker Scout JSON Report
+    - name: Upload Order Docker Scout JSON Report
       uses: actions/upload-artifact@v4
       with:
         name: recommendations_report_order.json
