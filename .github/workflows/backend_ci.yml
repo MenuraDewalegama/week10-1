@@ -169,16 +169,14 @@ jobs:
     - name: Login to Azure Container Registry
       run: az acr login --name ${{ env.ACR_LOGIN_SERVER }}
 
-    - name: Install Docker Scout CLI plugin
+
+    - name: Install Docker Scout CLI
       run: |
-        mkdir -p ~/.docker/cli-plugins
-        curl -sSL https://github.com/docker/scout-cli/releases/latest/download/docker-scout_linux_amd64 \
-          -o ~/.docker/cli-plugins/docker-scout
-        chmod +x ~/.docker/cli-plugins/docker-scout
+        curl -sSfL https://raw.githubusercontent.com/docker/scout-cli/main/install.sh | sh -s --
 
     - name: Run Docker Scout Scan for Product Service
       run: |
-        ~/.docker/cli-plugins/docker-scout cves ${{ env.ACR_LOGIN_SERVER }}/product_service:latest > vulnerabilities_report_product.json
+        docker scout cves ${{ env.ACR_LOGIN_SERVER }}/product_service:latest > vulnerabilities_report_product.json
         mkdir -p reports
         mv vulnerabilities_report_product.json reports/
 
@@ -190,7 +188,7 @@ jobs:
         
     - name: Run Docker Scout Scan for Product Service
       run: |
-        ~/.docker/cli-plugins/docker-scout cves ${{ env.ACR_LOGIN_SERVER }}/order_service:latest > vulnerabilities_report_order.json
+        docker scout cves ${{ env.ACR_LOGIN_SERVER }}/order_service:latest > vulnerabilities_report_order.json
         mkdir -p reports
         mv vulnerabilities_report_order.json reports/
 
