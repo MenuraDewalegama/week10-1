@@ -169,6 +169,13 @@ jobs:
     - name: Login to Azure Container Registry
       run: az acr login --name ${{ env.ACR_LOGIN_SERVER }}
 
+    - name: Install Docker Scout CLI plugin
+      run: |
+        DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
+        mkdir -p "$DOCKER_CONFIG/cli-plugins"
+        curl -sSL https://github.com/docker/scout-cli/releases/latest/download/docker-scout_linux_amd64 -o "$DOCKER_CONFIG/cli-plugins/docker-scout"
+        chmod +x "$DOCKER_CONFIG/cli-plugins/docker-scout"
+
     - name: Run Docker Scout Scan for Product Service
       run: |
         docker scout cves ${{ env.ACR_LOGIN_SERVER }}/product_service:latest > vulnerabilities_report_product.json
